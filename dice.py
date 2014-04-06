@@ -6,18 +6,19 @@ class d6:
         self.test = test
 
     def roll(self):
-        results = {'passes': 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0};
+        results = {'passes': 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0}
 
         for i in range(0, self.number):
-            roll = random.randint(1, 6);
-            results[roll] += 1;
+            roll = random.randint(1, 6)
+            results[roll] += 1
 
             if roll >= self.test:
-                results['passes'] += 1;
+                results['passes'] += 1
 
         return results;
 
     def stat(self):
-        p = float(self.test - 1) / 6.0;
+        p = (7.0 - float(self.test)) / 6.0
 
-        return float(self.number) * p;
+        return float(self.number) * p
+
