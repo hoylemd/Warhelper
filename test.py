@@ -2,6 +2,7 @@ import random
 import math
 import dice
 import attacks
+from model_profile import ModelProfile as ModelProfile
 
 def close_enough(a, b):
     return abs(a - b) < 0.0000005
@@ -42,10 +43,22 @@ def test_wounding_attack():
 
     return roll_result and stat_result;
 
+def test_model_profile():
+    space_marine = ModelProfile(4, 4, 4, 4, 1, 4, 1, 8, 3)
+
+    #expected profile
+    expected = "WS BS S  T  W  I  A  Ld Sv\n4  4  4  4  1  4  1  8  3+"
+
+    return space_marine.print_statline() == expected;
+
 
 if __name__ == "__main__":
     random.seed(552);
 
+    print "test d6:",
     print test_d6();
+    print "test wounding attack:",
     print test_wounding_attack();
+    print "test model profile:",
+    print test_model_profile();
 
