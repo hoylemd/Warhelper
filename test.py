@@ -2,7 +2,9 @@ import random
 import math
 import dice
 import attacks
+from weapon import Weapon as Weapon
 from model_profile import ModelProfile as ModelProfile
+from special_rules import SpecialRule as SpecialRule
 
 def close_enough(a, b):
     return abs(a - b) < 0.0000005
@@ -43,13 +45,63 @@ def test_wounding_attack():
 
     return roll_result and stat_result;
 
+bolter = None
+bolt_pistol = None
+def test_weapon():
+    bolter = Weapon("Boltgun", 24, 4, 5, ["rapid fire"])
+    expected  = "        Range S  AP Type\n"
+    expected += "Boltgun  24\"  4  5  rapid fire"
+
+    output = bolter.print_statline()
+
+    result = output == expected
+
+    if not result:
+        print "expected:"
+        print expected
+        print output
+        print "^- output"
+
+    return result
+
+power_armor = None
+frag_and_krak_grenades = None
+def test_wargear():
+    return true
+
+and_they_shall_know_no_fear = None
+combat_squads = None
+chapter_tactics = None
+def test_special_rule():
+    return true
+
 def test_model_profile():
-    space_marine = ModelProfile(4, 4, 4, 4, 1, 4, 1, 8, 3)
+    space_marine = ModelProfile("Space Marine", 4, 4, 4, 4, 1, 4, 1, 8, 3)
 
     #expected profile
-    expected = "WS BS S  T  W  I  A  Ld Sv\n4  4  4  4  1  4  1  8  3+"
+    expected =  "             WS BS S  T  W  I  A  Ld Sv\n"
+    expected += "Space Marine 4  4  4  4  1  4  1  8  3+\n"
+    expected += "Wargear:\n"
+    expected += "  Bolter\n"
+    expected += "  Bolt Pistol\n"
+    expected += "  Power Armour\n"
+    expected += "  Frag and Krak grenades\n"
+    expected += "Special Rules:\n"
+    expected += "  And They Shall Know No Fear\n"
+    expected += "  Combat Squads\n"
+    expected += "  Chapter Tactics\n"
 
-    return space_marine.print_statline() == expected;
+    output = space_marine.print_summary()
+    result = output == expected
+
+    if not result:
+        print "expected:"
+        print expected
+        print output
+        print "^- output"
+
+    return result
+
 
 
 if __name__ == "__main__":
@@ -59,6 +111,8 @@ if __name__ == "__main__":
     print test_d6();
     print "test wounding attack:",
     print test_wounding_attack();
+    print "test weapons:",
+    print test_weapon();
     print "test model profile:",
     print test_model_profile();
 
