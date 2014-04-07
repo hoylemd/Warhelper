@@ -1,4 +1,5 @@
-import random;
+import random
+import math
 
 class d6:
     def __init__(self, number, test):
@@ -8,7 +9,9 @@ class d6:
     def roll(self):
         results = {'passes': 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0}
 
-        for i in range(0, self.number):
+        floored = int(math.floor(self.number))
+
+        for i in range(0, floored):
             roll = random.randint(1, 6)
             results[roll] += 1
 
