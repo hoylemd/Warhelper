@@ -2,6 +2,7 @@ import random
 import math
 import dice
 import attacks
+from wargear import Wargear as Wargear
 from weapon import Weapon as Weapon
 from model_profile import ModelProfile as ModelProfile
 from special_rules import SpecialRule as SpecialRule
@@ -45,14 +46,12 @@ def test_wounding_attack():
 
     return roll_result and stat_result;
 
-bolter = None
-bolt_pistol = None
-def test_weapon():
-    bolter = Weapon("Boltgun", 24, 4, 5, ["rapid fire"])
+def test_boltgun():
+    boltgun = Weapon("Boltgun", 24, 4, 5, ["rapid fire"])
     expected  = "        Range S  AP Type\n"
     expected += "Boltgun  24\"  4  5  rapid fire"
 
-    output = bolter.print_statline()
+    output = boltgun.print_statline()
 
     result = output == expected
 
@@ -64,10 +63,37 @@ def test_weapon():
 
     return result
 
-power_armor = None
-frag_and_krak_grenades = None
-def test_wargear():
-    return true
+def test_plasmagun():
+    weapon = Weapon("Plasmagun", 24, 7, 2, ["rapid fire", "gets hot"])
+    expected  = "          Range S  AP Type\n"
+    expected += "Plasmagun  24\"  7  2  rapid fire,\n"
+    expected += "                      gets hot"
+
+    output = weapon.print_statline()
+
+    result = output == expected
+
+    if not result:
+        print "expected:"
+        print expected
+        print output
+        print "^- output"
+
+    return result
+
+def test_power_armour():
+    power_armour = Wargear("Power Armour", "3+ armour save")
+    expected_name = "Power Armour"
+    expected_description = "3+ armour save"
+
+    result = (power_armour.name == expected_name)
+    result = result and (power_armour.description == expected_description)
+
+    if not result:
+        print power_armour.name + "/" + expected_name
+        print power_armour.description + "/" + expected_description
+
+    return result
 
 and_they_shall_know_no_fear = None
 combat_squads = None
@@ -77,12 +103,23 @@ def test_special_rule():
 
 def test_model_profile():
     space_marine = ModelProfile("Space Marine", 4, 4, 4, 4, 1, 4, 1, 8, 3)
+    space_marine.addWargear(Weapon("Boltgun", 24, 4, 5, ["rapid fire"]), "weapon")
+    space_marine.addWargear(Weapon("Bolt Pistol", 12, 4, 5, ["pistol"]), "weapon")
+    space_marine.addWargear(Wargear("Power Armour", "3+ armour save"), "wargear")
+    space_marine.addWargear(Wargear("Frag and Krak grenades", "Assault and krag grenades"),
+        "wargear")
+    space_marine.addSpecialRule(SpecialRule("And They Shall Know No Fear",
+        "Automatic regroup, No sweeping advances"))
+    space_marine.addSpecialRule(SpecialRule("Combat Squads",
+        "10-man squads may separate into 2 5-man squads at deployment"))
+    space_marine.addSpecialRule(SpecialRule("Chapter Tactics",
+        "Special rules per chapter"))
 
     #expected profile
     expected =  "             WS BS S  T  W  I  A  Ld Sv\n"
     expected += "Space Marine 4  4  4  4  1  4  1  8  3+\n"
     expected += "Wargear:\n"
-    expected += "  Bolter\n"
+    expected += "  Boltgun\n"
     expected += "  Bolt Pistol\n"
     expected += "  Power Armour\n"
     expected += "  Frag and Krak grenades\n"
@@ -102,8 +139,6 @@ def test_model_profile():
 
     return result
 
-
-
 if __name__ == "__main__":
     random.seed(552);
 
@@ -112,7 +147,11 @@ if __name__ == "__main__":
     print "test wounding attack:",
     print test_wounding_attack();
     print "test weapons:",
-    print test_weapon();
+    print test_boltgun();
+    print "test plasmagun:",
+    print test_plasmagun();
+    print "test power armour:",
+    print test_power_armour()
     print "test model profile:",
     print test_model_profile();
 

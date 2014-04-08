@@ -46,17 +46,17 @@ class ModelProfile:
             string += "  " + thing.name + "\n"
 
         # special rules
-        string == "Special Rules\n"
+        string += "Special Rules:\n"
         for rule in self.rules:
             string += "  " + rule.name + "\n"
 
         return string
 
-    def add_wargear(self, item, type = None):
+    def addWargear(self, item, type = None):
         self.wargear.append(item)
 
         if type == "weapon":
             self.weapons.append(item)
 
-    def add_special_rule(self, rule):
+    def addSpecialRule(self, rule):
         self.rules.append(rule)
