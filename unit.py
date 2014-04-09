@@ -17,7 +17,8 @@ class Unit:
         else:
             self.leader = record
 
-    def print_summary
+    def print_summary(self):
+       return self.name
 
     def clone(self):
         new = Unit(self.name)
