@@ -4,8 +4,9 @@ import dice
 import attacks
 from wargear import Wargear as Wargear
 from weapon import Weapon as Weapon
-from model_profile import ModelProfile as ModelProfile
 from special_rules import SpecialRule as SpecialRule
+from model_profile import ModelProfile as ModelProfile
+from unit import Unit as Unit
 
 def close_enough(a, b):
     return abs(a - b) < 0.0000005
@@ -37,14 +38,14 @@ def test_wounding_attack():
     expected_stat = 4.44444444444
 
     # roll test
-    roll = attack.roll();
+    roll = attack.roll()
     roll_result = roll == expected_roll
 
     # stat test
     stat = attack.stat()
     stat_result = close_enough(stat, expected_stat)
 
-    return roll_result and stat_result;
+    return roll_result and stat_result
 
 def test_boltgun():
     boltgun = Weapon("Boltgun", 24, 4, 5, ["rapid fire"])
@@ -101,7 +102,7 @@ chapter_tactics = None
 def test_special_rule():
     return true
 
-def test_model_profile():
+def make_space_marine():
     space_marine = ModelProfile("Space Marine", 4, 4, 4, 4, 1, 4, 1, 8, 3)
     space_marine.addWargear(Weapon("Boltgun", 24, 4, 5, ["rapid fire"]), "weapon")
     space_marine.addWargear(Weapon("Bolt Pistol", 12, 4, 5, ["pistol"]), "weapon")
@@ -114,6 +115,11 @@ def test_model_profile():
         "10-man squads may separate into 2 5-man squads at deployment"))
     space_marine.addSpecialRule(SpecialRule("Chapter Tactics",
         "Special rules per chapter"))
+
+    return space_marine
+
+def test_model_profile():
+    space_marine = make_space_marine()
 
     #expected profile
     expected =  "             WS BS S  T  W  I  A  Ld Sv\n"
@@ -139,19 +145,43 @@ def test_model_profile():
 
     return result
 
+def test_unit():
+    marine = make_space_marine()
+    sergeant = ModelProfile("Space Marine Sergeant", 4, 4, 4, 4, 1, 4, 1, 8, 3)
+    sergeant.addWargear(Weapon("Close Combat Weapon", 0, 4, 0, ["melee"]), "weapon")
+    sergeant.addWargear(Weapon("Bolt Pistol", 12, 4, 5, ["pistol"]), "weapon")
+    sergeant.addWargear(Wargear("Power Armour", "3+ armour save"), "wargear")
+    sergeant.addWargear(Wargear("Frag and Krak grenades", "Assault and krag grenades"),
+        "wargear")
+    sergeant.addSpecialRule(SpecialRule("And They Shall Know No Fear",
+        "Automatic regroup, No sweeping advances"))
+    sergeant.addSpecialRule(SpecialRule("Combat Squads",
+        "10-man squads may separate into 2 5-man squads at deployment"))
+    sergeant.addSpecialRule(SpecialRule("Chapter Tactics",
+        "Special rules per chapter"))
+
+    unit = Unit("Space Marine Tactical Squad", "infantry")
+    unit.addModel(marine, 9)
+    unit.addModel(sergeant, 1)
+
+    print unit.print_summary()
+
+
 if __name__ == "__main__":
-    random.seed(552);
+    random.seed(552)
 
     print "test d6:",
-    print test_d6();
+    print test_d6()
     print "test wounding attack:",
-    print test_wounding_attack();
+    print test_wounding_attack()
     print "test weapons:",
-    print test_boltgun();
+    print test_boltgun()
     print "test plasmagun:",
-    print test_plasmagun();
+    print test_plasmagun()
     print "test power armour:",
     print test_power_armour()
     print "test model profile:",
-    print test_model_profile();
+    print test_model_profile()
+    print "test unit:"
+    print test_unit()
 

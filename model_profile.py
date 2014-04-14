@@ -19,10 +19,8 @@ class ModelProfile:
         self.weapons = []
         self.rules = []
 
-    def print_statline(self):
-        name_length = len(self.name)
-        string = (" " * name_length) + " WS BS S  T  W  I  A  Ld Sv\n"
-        string += self.name + " " + str(self.weapon_skill) + " "
+    def get_statline(self):
+        string = str(self.weapon_skill) + " "
         string += " " + str(self.ballistic_skill) + " "
         string += " " + str(self.strength) + " "
         string += " " + str(self.toughness) + " "
@@ -33,6 +31,14 @@ class ModelProfile:
         if self.leadership < 10:
             string += " "
         string += " " + str(self.save) + "+"
+
+        return string
+
+
+    def print_statline(self):
+        name_length = len(self.name)
+        string = (" " * name_length) + " WS BS S  T  W  I  A  Ld Sv\n"
+        string += self.name + " " + self.get_statline()
 
         return string
 
