@@ -166,7 +166,6 @@ def test_unit():
 
     print unit.print_summary()
 
-
 if __name__ == "__main__":
     random.seed(552)
 

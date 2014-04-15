@@ -23,15 +23,22 @@ class Unit:
         string += self.name + "\n"
 
         statlines = {}
+        offset = 0;
         for record in self.models:
             model = record['profile']
             statlines[model.name] = model.get_statline()
+            if len(model.name) > offset:
+                offset = len(model.name)
 
         # determine offset for statlines
+
         # print stat header
         # print statlines
+        string += (" " * (offset + 1)) + model_profile.statline_header + "\n"
         for profile in statlines:
-            string += profile + " " + statlines[profile] + "\n"
+            string += profile
+            string += " " * (offset - len(profile))
+            string += " " + statlines[profile] + "\n"
         # print type
         # print compisition
         # print wargear

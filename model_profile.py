@@ -1,4 +1,6 @@
 
+statline_header = "WS BS S  T  W  I  A  Ld Sv"
+
 class ModelProfile:
     def __init__(self, name, ws, bs, s, t, w, i, a, ld, sv):
         self.name = name
@@ -37,7 +39,7 @@ class ModelProfile:
 
     def print_statline(self):
         name_length = len(self.name)
-        string = (" " * name_length) + " WS BS S  T  W  I  A  Ld Sv\n"
+        string = (" " * name_length) + " " + statline_header + "\n"
         string += self.name + " " + self.get_statline()
 
         return string
