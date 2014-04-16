@@ -164,7 +164,29 @@ def test_unit():
     unit.addModel(marine, 9)
     unit.addModel(sergeant, 1)
 
-    print unit.print_summary()
+    expected = "Space Marine Tactical Squad\n"
+    expected += "                      WS BS S  T  W  I  A  Ld Sv\n"
+    expected += "Space Marine Sergeant 4  4  4  4  1  4  1  8  3+\n"
+    expected += "Space Marine          4  4  4  4  1  4  1  8  3+\n"
+    expected += "Unit Type: infantry\n"
+    expected += "Unit Composition:\n"
+    expected += "  9 Space Marine\n"
+    expected += "  1 Space Marine Sergeant\n"
+    expected += "Wargear:\n"
+    expected += "  Frag and Krak grenades\n"
+    expected += "  Boltgun(Space Marine only)\n"
+    expected += "  Close Combat Weapon(Space Marine Sergeant only)\n"
+    expected += "  Bolt Pistol\n"
+    expected += "  Power Armour\n"
+    expected += "Special Rules:\n"
+    expected += "  And They Shall Know No Fear\n"
+    expected += "  Combat Squads\n"
+    expected += "  Chapter Tactics\n"
+
+    output = unit.print_summary()
+    result = output == expected
+
+    return result
 
 if __name__ == "__main__":
     random.seed(552)
@@ -181,6 +203,6 @@ if __name__ == "__main__":
     print test_power_armour()
     print "test model profile:",
     print test_model_profile()
-    print "test unit:"
+    print "test unit:",
     print test_unit()
 

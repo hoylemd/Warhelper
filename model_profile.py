@@ -21,6 +21,9 @@ class ModelProfile:
         self.weapons = []
         self.rules = []
 
+    def __repr__(self):
+        return "ModelProfile(" + self.name + ")"
+
     def get_statline(self):
         string = str(self.weapon_skill) + " "
         string += " " + str(self.ballistic_skill) + " "
