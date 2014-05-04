@@ -71,3 +71,31 @@ class ModelProfile:
 
     def addSpecialRule(self, rule):
         self.rules.append(rule)
+
+    def best_save(self, attack):
+        """ Determine the best saving throw available against a given attack
+
+        Arguments:
+            attack: a WoundingAttack object describing the attack
+
+        Returns:
+            the save roll needed to negate this wound
+        """
+        best = 7;
+        weapon = attack.weapon
+
+        # try armour save
+        armour = self.save
+        if armour > 0 and (armour < weapon.armour_piercing or weapon.armour_piercing == 0):
+            best = armour
+
+        # try invulnerable save?
+
+        # try cover save
+        if (attack.cover_save > 0 and attack.cover_save < best and
+            'template' not in weapon.types and 'ignores cover' not in weapon.types):
+            best = attack.cover_save
+
+        return best
+
+

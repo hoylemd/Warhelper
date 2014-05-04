@@ -17,10 +17,12 @@ class Weapon:
                 if type == "rapid fire":
                     if (float(distance) <( self.range / 2.0)):
                         return 2
+                    else:
+                        return 1
 
                 separated = type.split(" ")
 
-                if (int(separated[1])):
+                if len(separated) == 2:
                     return int(separated[1])
 
             return 1;

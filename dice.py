@@ -7,7 +7,7 @@ class d6:
         self.test = test
 
     def roll(self):
-        results = {'passes': 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0}
+        results = {'passes': 0, 'fails': 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0}
 
         floored = int(math.floor(self.number))
 
@@ -17,6 +17,8 @@ class d6:
 
             if roll >= self.test:
                 results['passes'] += 1
+            else:
+                results['fails'] += 1
 
         return results;
 
