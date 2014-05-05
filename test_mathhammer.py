@@ -1,5 +1,6 @@
 import random
 import math
+import pytest
 import dice
 import attacks
 from wargear import Wargear as Wargear
@@ -34,7 +35,7 @@ def test_d6():
     stat = rolls.stat()
     stat_result = close_enough(stat, expected_stat)
 
-    return roll_result and stat_result
+    assert roll_result and stat_result
 
 def test_WoundingAttack():
     # test object
@@ -61,15 +62,14 @@ def test_WoundingAttack():
 
     result = roll_result and stat_result
 
+    message = ""
     if not result:
-        message = "False\n"
-
         message += "  Roll: expected: " + str(expected_roll) + ", got: " + str(roll) + "\n"
         message += "  Stat: expected: " + str(expected_stat) + ", got: " + str(stat)
-    else:
-        message = "True"
 
-    return message
+    print message
+    assert result
+
 
 def test_boltgun():
     boltgun = Weapon("Boltgun", 24, 4, 5, ["rapid fire"])
@@ -86,7 +86,7 @@ def test_boltgun():
         print output
         print "^- output"
 
-    return result
+    assert result
 
 def test_plasmagun():
     weapon = Weapon("Plasmagun", 24, 7, 2, ["rapid fire", "gets hot"])
@@ -104,7 +104,7 @@ def test_plasmagun():
         print output
         print "^- output"
 
-    return result
+    assert result
 
 def test_power_armour():
     power_armour = Wargear("Power Armour", "3+ armour save")
@@ -118,10 +118,10 @@ def test_power_armour():
         print power_armour.name + "/" + expected_name
         print power_armour.description + "/" + expected_description
 
-    return result
+    assert result
 
 def test_special_rule():
-    return True
+    assert True
 
 def make_space_marine():
     space_marine = ModelProfile("Space Marine", 4, 4, 4, 4, 1, 4, 1, 8, 3)
@@ -164,7 +164,7 @@ def test_model_profile():
         print output
         print "^- output"
 
-    return result
+    assert result
 
 def test_armour_save():
     model = make_space_marine()
@@ -176,7 +176,7 @@ def test_armour_save():
     output = model.best_save(attack)
     result = output == expected
 
-    return result
+    assert result
 
 def test_cover_save():
     model = make_space_marine()
@@ -189,12 +189,9 @@ def test_cover_save():
     result = output == expected
 
     if not result:
-        message = "False\n"
-        message += "  expected: " + str(expected) + " got: " + str(output)
-    else:
-        message = "True"
+        print "expected: " + str(expected) + " got: " + str(output)
 
-    return message
+    assert result
 
 def tactical_squad():
     marine = make_space_marine()
@@ -273,16 +270,13 @@ def test_unit():
     output = unit.print_summary()
     result = output == expected
 
-    return result
+    assert result
 
 def test_null_model():
     unit = Unit("No models!", "infantry")
-    try:
+    with pytest.raises(NullModelException):
         unit.addModel(None, 5)
-    except NullModelException as e:
-        return True
 
-    return False
 
 def unit_shooting(unit, target, weapons, range, expected):
     string = ""
@@ -388,38 +382,9 @@ def test_shooting_attack():
     blob_ok = blob_result['result'];
     string += blob_result['output'];
 
-    result = tac_squad_ok and blob_ok
+    assert tac_squad_ok and blob_ok
 
-    return {'result': result, 'output': string}
+    if not (tac_squad_ok and blob_ok):
+        print string
 
-if __name__ == "__main__":
-    random.seed(552)
-
-    print "test d6:",
-    print test_d6()
-    print "test wounding attack:",
-    print test_WoundingAttack()
-    print "test weapons:",
-    print test_boltgun()
-    print "test plasmagun:",
-    print test_plasmagun()
-    print "test power armour:",
-    print test_power_armour()
-    print "test model profile:",
-    print test_model_profile()
-    print "test unit:",
-    print test_unit()
-    print "test armour save:",
-    print test_armour_save()
-    print "test cover save:",
-    print test_cover_save()
-    print "test null model:",
-    print test_null_model()
-    # print test zero model count
-    # print test leader
-    print "test shooting attack:",
-    test_shooting_result = test_shooting_attack()
-    print test_shooting_result['result']
-    if not test_shooting_result['result']:
-        print test_shooting_result['output']
-
+random.seed(552)
